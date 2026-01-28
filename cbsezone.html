@@ -63,6 +63,15 @@
         .info-card {
             transition: all 0.3s ease;
         }
+
+        /* Hide scrollbar but allow scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 <body class="bg-white min-h-screen text-gray-800">
@@ -73,11 +82,11 @@
                 <a href="index.html" class="text-xl font-semibold tracking-tight">
                     <span class="text-emerald-600">School</span> Portal
                 </a>
-                <div class="flex space-x-8">
-                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">Home</a>
-                    <a href="society.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">Society</a>
-                    <a href="master.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">Master</a>
-                    <a href="cbsezone.html" class="nav-link active text-gray-800 font-medium text-sm tracking-wide">CBSE & Zone</a>
+                <div class="flex space-x-4 md:space-x-8 overflow-x-auto no-scrollbar">
+                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">Home</a>
+                    <a href="society.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">Society</a>
+                    <a href="master.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">Master</a>
+                    <a href="cbsezone.html" class="nav-link active text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">CBSE & Zone</a>
                 </div>
             </div>
         </div>
@@ -114,9 +123,9 @@
             </div>
 
             <div id="mainContent" class="hidden">
-                <div class="bg-gray-50 rounded-3xl p-2 mb-12 flex justify-center gap-2 animate-fade-in delay-300">
-                    <button onclick="showTab('cbse', this)" class="tab-btn active px-8 py-3 rounded-2xl text-sm font-medium">CBSE Information</button>
-                    <button onclick="showTab('zone', this)" class="tab-btn px-8 py-3 rounded-2xl text-sm font-medium text-gray-500">Zone Details</button>
+                <div class="bg-gray-50 rounded-3xl p-2 mb-12 flex justify-center gap-2 overflow-x-auto no-scrollbar max-w-full animate-fade-in delay-300">
+                    <button onclick="showTab('cbse', this)" class="tab-btn active px-4 md:px-8 py-3 rounded-2xl text-xs md:text-sm font-medium whitespace-nowrap">CBSE Information</button>
+                    <button onclick="showTab('zone', this)" class="tab-btn px-4 md:px-8 py-3 rounded-2xl text-xs md:text-sm font-medium text-gray-500 whitespace-nowrap">Zone Details</button>
                 </div>
 
                 <!-- CBSE Tab -->
