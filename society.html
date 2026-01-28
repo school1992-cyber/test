@@ -173,6 +173,15 @@
         .tab-btn.active {
             color: #059669;
         }
+
+        /* Hide scrollbar but allow scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
     </style>
 </head>
 <body class="bg-white min-h-screen text-gray-800">
@@ -183,11 +192,11 @@
                 <a href="index.html" class="text-xl font-semibold tracking-tight animate-on-load animate-fade-in-left">
                     <span class="text-emerald-600">School</span> Portal
                 </a>
-                <div class="flex space-x-8">
-                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide transition-colors duration-300 animate-on-load animate-fade-in delay-100">Home</a>
-                    <a href="society.html" class="nav-link active text-gray-800 font-medium text-sm tracking-wide animate-on-load animate-fade-in delay-200">Society</a>
-                    <a href="master.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide transition-colors duration-300 animate-on-load animate-fade-in delay-300">Master</a>
-                    <a href="cbsezone.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide transition-colors duration-300 animate-on-load animate-fade-in delay-400">CBSE & Zone</a>
+                <div class="flex space-x-4 md:space-x-8 overflow-x-auto no-scrollbar">
+                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap transition-colors duration-300 animate-on-load animate-fade-in delay-100">Home</a>
+                    <a href="society.html" class="nav-link active text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap animate-on-load animate-fade-in delay-200">Society</a>
+                    <a href="master.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap transition-colors duration-300 animate-on-load animate-fade-in delay-300">Master</a>
+                    <a href="cbsezone.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap transition-colors duration-300 animate-on-load animate-fade-in delay-400">CBSE & Zone</a>
                 </div>
             </div>
         </div>
@@ -226,7 +235,7 @@
             <div id="societyContent" class="hidden">
                 <!-- Tab Buttons -->
                 <div class="flex justify-center mb-12 scroll-reveal">
-                    <div class="inline-flex bg-gray-50 rounded-2xl p-2 gap-2" id="tabButtons">
+                    <div class="inline-flex bg-gray-50 rounded-2xl p-2 gap-2 overflow-x-auto no-scrollbar max-w-full" id="tabButtons">
                         <!-- Tabs will be generated dynamically -->
                     </div>
                 </div>
