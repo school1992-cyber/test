@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Society | School Management Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes scaleIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in-left {
+            animation: fadeInLeft 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in-right {
+            animation: fadeInRight 0.8s ease-out forwards;
+        }
+
+        .animate-scale-in {
+            animation: scaleIn 0.6s ease-out forwards;
+        }
+
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+        .delay-400 { animation-delay: 0.4s; }
+        .delay-500 { animation-delay: 0.5s; }
+        .delay-600 { animation-delay: 0.6s; }
+
+        .animate-on-load { opacity: 0; }
+
+        /* Hover Effects */
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Nav Link Underline */
+        .nav-link {
+            position: relative;
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #059669;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+
+        /* Document Link Hover */
+        .doc-link {
+            transition: all 0.3s ease;
+        }
+
+        .doc-link:hover {
+            background-color: #ECFDF5;
+            transform: translateX(5px);
+        }
+
+        .doc-link:hover .doc-icon {
+            transform: scale(1.1);
+        }
+
+        .doc-icon {
+            transition: transform 0.3s ease;
+        }
+
+        /* Society Card */
+        .society-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .society-card:hover {
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Scroll Reveal */
+        .scroll-reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .scroll-reveal.revealed {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid #E5E7EB;
+            border-top: 3px solid #059669;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Tab styling */
+        .tab-btn {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #059669, #10B981);
+            transition: width 0.3s ease;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-btn.active::after {
+            width: 100%;
+        }
+
+        .tab-btn.active {
+            color: #059669;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex justify-between items-center py-5">
+                <a href="index.html" class="text-xl font-semibold tracking-tight animate-on-load animate-fade-in-left">
+                    <span class="text-emerald-600">School</span> Portal
+                </a>
+                <div class="flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide transition-colors duration-300 animate-on-load animate-fade-in delay-100">Home</a>
+                    <a href="society.html" class="nav-link active text-gray-800 font-medium text-sm tracking-wide animate-on-load animate-fade-in delay-200">Society</a>
+                    <a href="master.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide transition-colors duration-300 animate-on-load animate-fade-in delay-300">Master</a>
+                    <a href="cbsezone.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide transition-colors duration-300 animate-on-load animate-fade-in delay-400">CBSE & Zone</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="pt-32 pb-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-emerald-600 font-medium tracking-widest text-sm uppercase mb-4 animate-on-load animate-fade-in delay-200">Organization</p>
+            <h1 class="text-4xl md:text-6xl font-light text-gray-900 mb-6 leading-tight animate-on-load animate-fade-in delay-300">
+                Society <span class="font-semibold">Documents</span>
+            </h1>
+            <p class="text-lg text-gray-500 font-light max-w-xl mx-auto leading-relaxed animate-on-load animate-fade-in delay-400">
+                Access important documents from our educational and charitable societies.
+            </p>
+        </div>
+    </header>
+
+    <!-- Society Tabs Section -->
+    <section class="py-12 px-6">
+        <div class="max-w-5xl mx-auto">
+            <!-- Loading State -->
+            <div id="loadingState" class="flex flex-col items-center justify-center py-20">
+                <div class="spinner mb-4"></div>
+                <p class="text-gray-500 text-sm">Loading society data...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="hidden text-center py-20">
+                <div class="text-6xl mb-6">⚠️</div>
+                <p class="text-gray-600 text-lg mb-2">Unable to load data from Google Sheets</p>
+                <p class="text-gray-400 text-sm">Showing sample data instead</p>
+            </div>
+
+            <!-- Society Content -->
+            <div id="societyContent" class="hidden">
+                <!-- Tab Buttons -->
+                <div class="flex justify-center mb-12 scroll-reveal">
+                    <div class="inline-flex bg-gray-50 rounded-2xl p-2 gap-2" id="tabButtons">
+                        <!-- Tabs will be generated dynamically -->
+                    </div>
+                </div>
+
+                <!-- Tab Content -->
+                <div id="tabContent" class="scroll-reveal">
+                    <!-- Content will be generated dynamically -->
+                </div>
+            </div>
+
+            <!-- Fallback Static Content -->
+            <div id="staticContent" class="hidden">
+                <!-- Tab Buttons -->
+                <div class="flex justify-center mb-12">
+                    <div class="inline-flex bg-gray-50 rounded-2xl p-2 gap-2">
+                        <button onclick="showStaticTab(0)" class="tab-btn active px-6 py-3 rounded-xl font-medium text-sm" id="static-tab-0">
+                            Chaudhary Kishan Lal Memorial Society
+                        </button>
+                        <button onclick="showStaticTab(1)" class="tab-btn px-6 py-3 rounded-xl font-medium text-sm text-gray-500" id="static-tab-1">
+                            Smt. Ramkali Devi Memorial Society
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Static Tab Content -->
+                <div id="static-content-0" class="society-card bg-white rounded-3xl border border-gray-100 overflow-hidden">
+                    <div class="bg-gradient-to-r from-emerald-500 to-teal-500 p-8 text-white">
+                        <h3 class="text-2xl font-semibold mb-2">Chaudhary Kishan Lal Memorial Educational & Charitable Society</h3>
+                        <p class="text-emerald-100 font-light">Educational & Charitable Organization</p>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-sm font-medium text-gray-400 uppercase tracking-wider mb-6">Available Documents</h4>
+                        <div class="space-y-4">
+                            <a href="https://drive.google.com/file/d/1l3htUJSxyhHKu_8dksojsJLN96WvCT8D/view?usp=drive_link" target="_blank" class="doc-link flex items-center justify-between p-5 rounded-2xl border border-gray-100 group">
+                                <div class="flex items-center gap-4">
+                                    <div class="doc-icon w-12 h-12 bg-emerald-50 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">BYE-LAWS</p>
+                                        <p class="text-sm text-gray-400">Society bye-laws document</p>
+                                    </div>
+                                </div>
+                                <svg class="w-5 h-5 text-gray-400 group-hover:text-emerald-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                            <a href="https://drive.google.com/file/d/1LdN5d9YJByzpgcRTJOEgwSWwHu9tc95q/view?usp=drive_link" target="_blank" class="doc-link flex items-center justify-between p-5 rounded-2xl border border-gray-100 group">
+                                <div class="flex items-center gap-4">
+                                    <div class="doc-icon w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Certificate of Registration</p>
+                                        <p class="text-sm text-gray-400">Official registration certificate</p>
+                                    </div>
+                                </div>
+                                <svg class="w-5 h-5 text-gray-400 group-hover:text-emerald-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="static-content-1" class="society-card bg-white rounded-3xl border border-gray-100 overflow-hidden hidden">
+                    <div class="bg-gradient-to-r from-violet-500 to-purple-500 p-8 text-white">
+                        <h3 class="text-2xl font-semibold mb-2">Smt. Ramkali Devi Memorial Educational Charitable Society</h3>
+                        <p class="text-violet-100 font-light">Educational & Charitable Organization</p>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-sm font-medium text-gray-400 uppercase tracking-wider mb-6">Available Documents</h4>
+                        <div class="space-y-4">
+                            <a href="https://drive.google.com/file/d/1z7qUZbv3HMaGlN27w_gqrcfuD-U9HL8Z/view?usp=drive_link" target="_blank" class="doc-link flex items-center justify-between p-5 rounded-2xl border border-gray-100 group">
+                                <div class="flex items-center gap-4">
+                                    <div class="doc-icon w-12 h-12 bg-violet-50 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">BYE-LAWS</p>
+                                        <p class="text-sm text-gray-400">Society bye-laws document</p>
+                                    </div>
+                                </div>
+                                <svg class="w-5 h-5 text-gray-400 group-hover:text-violet-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                            <a href="https://drive.google.com/file/d/1pzXJstPRxPcYjBRYCJRZophxRyXGHcyh/view?usp=drive_link" target="_blank" class="doc-link flex items-center justify-between p-5 rounded-2xl border border-gray-100 group">
+                                <div class="flex items-center gap-4">
+                                    <div class="doc-icon w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
+                                        <svg class="w-6 h-6 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p class="font-medium text-gray-900">Certificate of Registration</p>
+                                        <p class="text-sm text-gray-400">Official registration certificate</p>
+                                    </div>
+                                </div>
+                                <svg class="w-5 h-5 text-gray-400 group-hover:text-violet-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                </svg>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Info Section -->
+    <section class="py-20 px-6 bg-gray-50">
+        <div class="max-w-6xl mx-auto">
+            <div class="grid md:grid-cols-3 gap-8">
+                <div class="scroll-reveal bg-white p-8 rounded-2xl border border-gray-100 hover-lift">
+                    <div class="w-14 h-14 bg-emerald-50 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-3">Multiple Schools</h4>
+                    <p class="text-gray-500 font-light">Managing quality education across multiple institutions.</p>
+                </div>
+                <div class="scroll-reveal bg-white p-8 rounded-2xl border border-gray-100 hover-lift">
+                    <div class="w-14 h-14 bg-amber-50 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-3">Quality Education</h4>
+                    <p class="text-gray-500 font-light">Committed to excellence in teaching and learning.</p>
+                </div>
+                <div class="scroll-reveal bg-white p-8 rounded-2xl border border-gray-100 hover-lift">
+                    <div class="w-14 h-14 bg-violet-50 rounded-xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-violet-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-semibold text-gray-900 mb-3">Charitable Mission</h4>
+                    <p class="text-gray-500 font-light">Supporting education for underprivileged students.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-100">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-400 text-sm">© 2024 School Management Portal</p>
+            <div class="flex space-x-8 mt-4 md:mt-0">
+                <a href="index.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors duration-300">Home</a>
+                <a href="master.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors duration-300">Master</a>
+                <a href="cbsezone.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors duration-300">CBSE & Zone</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // GOOGLE APPS SCRIPT URL
+        // ============================================
+        // Paste your Web App URL here (ends in /exec)
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtrlyjv_RSqQcWgf7_fqrLbItHxyY-Q1dHDplSL9ZLey3Yg5T1lY0o6HQ83FUWnTVBKA/exec';
+
+        const iconMap = {
+            'bye-laws': {
+                bg: 'bg-emerald-50',
+                color: 'text-emerald-600',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>'
+            },
+            'certificate': {
+                bg: 'bg-amber-50',
+                color: 'text-amber-600',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"></path>'
+            },
+            'default': {
+                bg: 'bg-gray-50',
+                color: 'text-gray-600',
+                icon: '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path>'
+            }
+        };
+
+        const gradients = [
+            'from-emerald-500 to-teal-500',
+            'from-violet-500 to-purple-500',
+            'from-blue-500 to-cyan-500',
+            'from-orange-500 to-red-500'
+        ];
+
+        async function fetchSocietyData() {
+            if (!APPS_SCRIPT_URL) {
+                console.log('No Apps Script URL provided, showing static content.');
+                showStaticContent();
+                return;
+            }
+
+            try {
+                // We use a simple fetch. Google Apps Script handles redirects automatically.
+                const response = await fetch(APPS_SCRIPT_URL);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                if (!data.societies || data.societies.length === 0) {
+                    throw new Error('No society data found in sheet.');
+                }
+
+                displayDynamicContent(data);
+            } catch (error) {
+                console.error('Fetch error:', error);
+                document.getElementById('errorState').classList.remove('hidden');
+                document.getElementById('errorState').innerHTML += `<p class="text-xs mt-4 text-red-400">Error: ${error.message}</p>`;
+                showStaticContent();
+            }
+        }
+
+        function displayDynamicContent(data) {
+            const loadingState = document.getElementById('loadingState');
+            const societyContent = document.getElementById('societyContent');
+            const tabButtons = document.getElementById('tabButtons');
+            const tabContent = document.getElementById('tabContent');
+
+            loadingState.classList.add('hidden');
+            societyContent.classList.remove('hidden');
+
+            // Generate tab buttons
+            tabButtons.innerHTML = data.societies.map((society, index) => {
+                const shortName = society.name.length > 20 ? society.name.substring(0, 20) + '...' : society.name;
+                return `
+                    <button onclick="showTab(${index})" class="tab-btn ${index === 0 ? 'active' : 'text-gray-500'} px-6 py-3 rounded-xl font-medium text-sm whitespace-nowrap" id="tab-${index}">
+                        ${shortName}
+                    </button>
+                `;
+            }).join('');
+
+            // Generate tab content
+            tabContent.innerHTML = data.societies.map((society, index) => `
+                <div id="content-${index}" class="society-card bg-white rounded-3xl border border-gray-100 overflow-hidden ${index !== 0 ? 'hidden' : ''}">
+                    <div class="bg-gradient-to-r ${gradients[index % gradients.length]} p-8 text-white">
+                        <h3 class="text-2xl font-semibold mb-2">${society.name}</h3>
+                        <p class="text-white/80 font-light">Educational & Charitable Organization</p>
+                    </div>
+                    <div class="p-8">
+                        <h4 class="text-sm font-medium text-gray-400 uppercase tracking-wider mb-6">Available Documents</h4>
+                        <div class="space-y-4">
+                            ${society.documents.length > 0 ? society.documents.map(doc => {
+                                const lowerName = doc.name.toLowerCase();
+                                const iconType = lowerName.includes('bye') ? 'bye-laws' : 
+                                               lowerName.includes('certificate') ? 'certificate' : 'default';
+                                const icon = iconMap[iconType];
+                                return `
+                                    <a href="${doc.link}" target="_blank" class="doc-link flex items-center justify-between p-5 rounded-2xl border border-gray-100 group">
+                                        <div class="flex items-center gap-4">
+                                            <div class="doc-icon w-12 h-12 ${icon.bg} rounded-xl flex items-center justify-center">
+                                                <svg class="w-6 h-6 ${icon.color}" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    ${icon.icon}
+                                                </svg>
+                                            </div>
+                                            <div>
+                                                <p class="font-medium text-gray-900">${doc.name}</p>
+                                                <p class="text-sm text-gray-400">View document</p>
+                                            </div>
+                                        </div>
+                                        <svg class="w-5 h-5 text-gray-400 group-hover:text-emerald-600 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                                        </svg>
+                                    </a>
+                                `;
+                            }).join('') : '<p class="text-gray-400 text-center py-4">No documents available.</p>'}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showTab(index) {
+            // Hide all content
+            document.querySelectorAll('[id^="content-"]').forEach(el => el.classList.add('hidden'));
+            // Reset all tabs
+            document.querySelectorAll('.tab-btn').forEach(el => {
+                el.classList.remove('active');
+                el.classList.add('text-gray-500');
+            });
+            
+            // Show selected content
+            document.getElementById('content-' + index).classList.remove('hidden');
+            // Highlight selected tab
+            const selectedTab = document.getElementById('tab-' + index);
+            selectedTab.classList.add('active');
+            selectedTab.classList.remove('text-gray-500');
+        }
+
+        function showStaticTab(index) {
+            // Hide all static content
+            document.querySelectorAll('[id^="static-content-"]').forEach(el => el.classList.add('hidden'));
+            // Reset all static tabs
+            document.querySelectorAll('[id^="static-tab-"]').forEach(el => {
+                el.classList.remove('active');
+                el.classList.add('text-gray-500');
+            });
+            
+            // Show selected content
+            document.getElementById('static-content-' + index).classList.remove('hidden');
+            // Highlight selected tab
+            const selectedTab = document.getElementById('static-tab-' + index);
+            selectedTab.classList.add('active');
+            selectedTab.classList.remove('text-gray-500');
+        }
+
+        function showStaticContent() {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('staticContent').classList.remove('hidden');
+        }
+
+        // ============================================
+        // NAVBAR SCROLL EFFECT
+        // ============================================
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('shadow-sm');
+            } else {
+                navbar.classList.remove('shadow-sm');
+            }
+        });
+
+        // ============================================
+        // SCROLL REVEAL ANIMATION
+        // ============================================
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('revealed');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.scroll-reveal').forEach(el => {
+            observer.observe(el);
+        });
+
+        // ============================================
+        // INIT
+        // ============================================
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.animate-on-load').forEach(el => {
+                el.style.opacity = '1';
+            });
+            
+            fetchSocietyData();
+        });
+    </script>
+</body>
+</html>

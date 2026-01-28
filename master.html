@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Documents | School Management Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #F59E0B;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        .tab-btn {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #F59E0B, #D97706);
+            transition: width 0.3s ease;
+            border-radius: 3px 3px 0 0;
+        }
+
+        .tab-btn.active::after {
+            width: 100%;
+        }
+
+        .tab-btn.active {
+            color: #F59E0B;
+        }
+
+        /* Loading Spinner */
+        .spinner {
+            border: 3px solid #E5E7EB;
+            border-top: 3px solid #F59E0B;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 transition-all duration-300 border-b border-gray-100" id="navbar">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex justify-between items-center py-5">
+                <a href="index.html" class="text-xl font-semibold tracking-tight">
+                    <span class="text-amber-600">School</span> Portal
+                </a>
+                <div class="flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">Home</a>
+                    <a href="society.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">Society</a>
+                    <a href="master.html" class="nav-link active text-gray-800 font-medium text-sm tracking-wide">Master</a>
+                    <a href="cbsezone.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">CBSE & Zone</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-32 pb-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-amber-600 font-medium tracking-widest text-sm uppercase mb-4 animate-fade-in">Repository</p>
+            <h1 class="text-4xl md:text-6xl font-light text-gray-900 mb-6 leading-tight animate-fade-in delay-100">
+                Master <span class="font-semibold">Documents</span>
+            </h1>
+            <p class="text-lg text-gray-500 font-light max-w-xl mx-auto leading-relaxed animate-fade-in delay-200">
+                Browse year-wise master records and institutional documentation.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <section class="pb-24 px-6">
+        <div class="max-w-5xl mx-auto">
+            
+            <!-- Loading State -->
+            <div id="loadingState" class="flex flex-col items-center justify-center py-20">
+                <div class="spinner mb-4"></div>
+                <p class="text-gray-500 text-sm">Loading document repository...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="hidden text-center py-20">
+                <div class="text-6xl mb-6">⚠️</div>
+                <p class="text-gray-600 text-lg mb-2">Unable to load data from the master file</p>
+                <div id="debugInfo" class="text-xs text-red-400 mt-4 font-mono"></div>
+                <button onclick="location.reload()" class="mt-8 px-6 py-2 bg-amber-600 text-white rounded-full text-sm hover:bg-amber-700 transition">Retry</button>
+            </div>
+
+            <div id="mainContent" class="hidden">
+                <!-- Search -->
+                <div class="mb-12 animate-fade-in delay-300">
+                    <div class="relative max-w-xl mx-auto">
+                        <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                        <input type="text" id="searchInput" oninput="searchDocs()" placeholder="Search documents in selected year..." 
+                            class="w-full bg-gray-50 border-0 rounded-2xl py-4 pl-12 pr-4 focus:ring-2 focus:ring-amber-500 transition-all">
+                    </div>
+                </div>
+
+                <!-- Year Tabs -->
+                <div class="flex justify-center mb-12 overflow-x-auto pb-4 no-scrollbar">
+                    <div class="inline-flex bg-gray-50 rounded-2xl p-2 gap-2" id="yearTabs">
+                        <!-- Dynamic Tabs -->
+                    </div>
+                </div>
+
+                <!-- Docs Grid -->
+                <div id="docsContainer" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Dynamic Document Cards -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-100">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-400 text-sm">© 2024 School Management Portal</p>
+            <div class="flex space-x-8 mt-4 md:mt-0">
+                <a href="index.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors">Home</a>
+                <a href="society.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors">Society</a>
+                <a href="cbsezone.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors">CBSE & Zone</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtrlyjv_RSqQcWgf7_fqrLbItHxyY-Q1dHDplSL9ZLey3Yg5T1lY0o6HQ83FUWnTVBKA/exec?page=master';
+        let masterData = [];
+        let currentYearIndex = 0;
+
+        async function fetchMasterDocs() {
+            try {
+                const response = await fetch(APPS_SCRIPT_URL);
+                const data = await response.json();
+                
+                if (data.error) throw new Error(data.error);
+                if (!data.years || data.years.length === 0) throw new Error("No data found in Master sheet.");
+
+                masterData = data.years;
+                renderUI();
+            } catch (error) {
+                console.error("Fetch error:", error);
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('errorState').classList.remove('hidden');
+                document.getElementById('debugInfo').innerText = "Error: " + error.message;
+            }
+        }
+
+        function renderUI() {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+
+            const tabContainer = document.getElementById('yearTabs');
+            tabContainer.innerHTML = masterData.map((item, index) => `
+                <button onclick="switchYear(${index})" class="tab-btn ${index === 0 ? 'active' : 'text-gray-500'} px-6 py-3 rounded-xl font-medium text-sm whitespace-nowrap" id="tab-${index}">
+                    ${item.year}
+                </button>
+            `).join('');
+
+            renderDocs();
+        }
+
+        function renderDocs() {
+            const container = document.getElementById('docsContainer');
+            const yearData = masterData[currentYearIndex];
+            
+            if (!yearData.documents || yearData.documents.length === 0) {
+                container.innerHTML = '<div class="col-span-full text-center py-20 text-gray-400">No documents found for this year.</div>';
+                return;
+            }
+
+            container.innerHTML = yearData.documents.map(doc => `
+                <div class="doc-card group hover-lift bg-white p-8 rounded-3xl border border-gray-100 flex flex-col h-full">
+                    <div class="w-14 h-14 bg-amber-50 rounded-2xl flex items-center justify-center mb-6">
+                        <svg class="w-7 h-7 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                    </div>
+                    <h4 class="text-xl font-medium text-gray-900 mb-2">${doc.name}</h4>
+                    <p class="text-gray-500 font-light text-sm mb-6 leading-relaxed">Official master record for the ${yearData.year} session.</p>
+                    <div class="flex items-center justify-between mt-auto pt-6 border-t border-gray-50">
+                        <span class="text-xs text-gray-400 uppercase tracking-widest">Document</span>
+                        <a href="${doc.link}" target="_blank" class="text-amber-600 text-sm font-semibold hover:text-amber-700 transition-colors">Open File →</a>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function switchYear(index) {
+            currentYearIndex = index;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.classList.add('text-gray-500');
+            });
+            document.getElementById('tab-' + index).classList.add('active');
+            document.getElementById('tab-' + index).classList.remove('text-gray-500');
+            
+            renderDocs();
+        }
+
+        function searchDocs() {
+            const term = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.doc-card');
+            
+            cards.forEach(card => {
+                const title = card.querySelector('h4').innerText.toLowerCase();
+                if (title.includes(term)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-3', 'shadow-sm');
+                navbar.classList.remove('py-5');
+            } else {
+                navbar.classList.remove('py-3', 'shadow-sm');
+                navbar.classList.add('py-5');
+            }
+        });
+
+        window.addEventListener('load', fetchMasterDocs);
+    </script>
+</body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CBSE & Zone | School Management Portal</title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+        .delay-100 { animation-delay: 0.1s; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
+
+        .hover-lift {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hover-lift:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+        }
+
+        .nav-link { position: relative; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #10B981;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after, .nav-link.active::after { width: 100%; }
+
+        .tab-btn {
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        .tab-btn::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background-color: #10B981;
+            transition: all 0.3s ease;
+            transform: translateX(-50%);
+        }
+        .tab-btn.active::after { width: 100%; }
+        .tab-btn.active { color: #10B981; }
+
+        .info-card {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body class="bg-white min-h-screen text-gray-800">
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 transition-all duration-300 border-b border-gray-100" id="navbar">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex justify-between items-center py-5">
+                <a href="index.html" class="text-xl font-semibold tracking-tight">
+                    <span class="text-emerald-600">School</span> Portal
+                </a>
+                <div class="flex space-x-8">
+                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">Home</a>
+                    <a href="society.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">Society</a>
+                    <a href="master.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">Master</a>
+                    <a href="cbsezone.html" class="nav-link active text-gray-800 font-medium text-sm tracking-wide">CBSE & Zone</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-32 pb-20 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <p class="text-emerald-600 font-medium tracking-widest text-sm uppercase mb-4 animate-fade-in">Compliance</p>
+            <h1 class="text-4xl md:text-6xl font-light text-gray-900 mb-6 leading-tight animate-fade-in delay-100">
+                CBSE & <span class="font-semibold">Zone Info</span>
+            </h1>
+            <p class="text-lg text-gray-500 font-light max-w-xl mx-auto leading-relaxed animate-fade-in delay-200">
+                Regional affiliation details, zonal statistics, and centralized examination schedules.
+            </p>
+        </div>
+    </header>
+
+    <!-- Main Tabs -->
+    <section class="pb-24 px-6">
+        <div class="max-w-5xl mx-auto">
+            
+            <!-- Loading State -->
+            <div id="loadingState" class="flex flex-col items-center justify-center py-20">
+                <div class="w-10 h-10 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin mb-4"></div>
+                <p class="text-gray-500 text-sm">Fetching compliance data...</p>
+            </div>
+
+            <!-- Error State -->
+            <div id="errorState" class="hidden text-center py-20">
+                <div class="text-6xl mb-6">⚠️</div>
+                <p class="text-gray-600 text-lg mb-2">Unable to load data from the compliance sheet</p>
+                <button onclick="location.reload()" class="mt-8 px-6 py-2 bg-emerald-600 text-white rounded-full text-sm hover:bg-emerald-700 transition">Retry</button>
+            </div>
+
+            <div id="mainContent" class="hidden">
+                <div class="bg-gray-50 rounded-3xl p-2 mb-12 flex justify-center gap-2 animate-fade-in delay-300">
+                    <button onclick="showTab('cbse', this)" class="tab-btn active px-8 py-3 rounded-2xl text-sm font-medium">CBSE Information</button>
+                    <button onclick="showTab('zone', this)" class="tab-btn px-8 py-3 rounded-2xl text-sm font-medium text-gray-500">Zone Details</button>
+                </div>
+
+                <!-- CBSE Tab -->
+                <div id="content-cbse" class="animate-fade-in space-y-4">
+                    <!-- Documents will load here -->
+                </div>
+
+                <!-- Zone Tab -->
+                <div id="content-zone" class="hidden animate-fade-in space-y-4">
+                    <!-- Documents will load here -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-12 px-6 border-t border-gray-100">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
+            <p class="text-gray-400 text-sm">© 2024 School Management Portal</p>
+            <div class="flex space-x-8 mt-4 md:mt-0">
+                <a href="index.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors">Home</a>
+                <a href="society.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors">Society</a>
+                <a href="master.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors">Master</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtrlyjv_RSqQcWgf7_fqrLbItHxyY-Q1dHDplSL9ZLey3Yg5T1lY0o6HQ83FUWnTVBKA/exec?page=cbsezone';
+        
+        async function fetchComplianceData() {
+            try {
+                const response = await fetch(APPS_SCRIPT_URL);
+                const data = await response.json();
+                
+                if (data.error) throw new Error(data.error);
+                
+                renderComplianceUI(data);
+            } catch (error) {
+                console.error("Fetch error:", error);
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('errorState').classList.remove('hidden');
+            }
+        }
+
+        function renderComplianceUI(data) {
+            document.getElementById('loadingState').classList.add('hidden');
+            document.getElementById('mainContent').classList.remove('hidden');
+
+            const cbseContainer = document.getElementById('content-cbse');
+            const zoneContainer = document.getElementById('content-zone');
+
+            // Render CBSE Docs
+            if (data.cbse && data.cbse.length > 0) {
+                cbseContainer.innerHTML = data.cbse.map(doc => createDocCard(doc, 'emerald')).join('');
+            } else {
+                cbseContainer.innerHTML = '<p class="text-center py-10 text-gray-400">No CBSE documents found.</p>';
+            }
+
+            // Render ZONE Docs
+            if (data.zone && data.zone.length > 0) {
+                zoneContainer.innerHTML = data.zone.map(doc => createDocCard(doc, 'blue')).join('');
+            } else {
+                zoneContainer.innerHTML = '<p class="text-center py-10 text-gray-400">No Zone documents found.</p>';
+            }
+        }
+
+        function createDocCard(doc, color) {
+            const colorClasses = {
+                emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600' },
+                blue: { bg: 'bg-blue-50', text: 'text-blue-600' }
+            };
+            const cls = colorClasses[color];
+
+            return `
+                <div class="p-6 bg-white border border-gray-100 rounded-3xl flex items-center justify-between group hover:bg-${color}-50/30 transition-all hover-lift">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 ${cls.bg} ${cls.text} rounded-2xl flex items-center justify-center">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="font-medium text-gray-900">${doc.name}</p>
+                            <p class="text-xs text-gray-400 uppercase tracking-tight">Compliance Document</p>
+                        </div>
+                    </div>
+                    <a href="${doc.link}" target="_blank" class="text-gray-300 group-hover:${cls.text} transition-colors p-2">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+                        </svg>
+                    </a>
+                </div>
+            `;
+        }
+
+        function showTab(tabName, btn) {
+            document.querySelectorAll('.tab-btn').forEach(b => {
+                b.classList.remove('active', 'text-emerald-600');
+                b.classList.add('text-gray-500');
+            });
+            btn.classList.add('active');
+            btn.classList.remove('text-gray-500');
+
+            document.querySelectorAll('[id^="content-"]').forEach(el => el.classList.add('hidden'));
+            document.getElementById('content-' + tabName).classList.remove('hidden');
+        }
+
+        window.addEventListener('scroll', () => {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('py-3', 'shadow-sm');
+                navbar.classList.remove('py-5');
+            } else {
+                navbar.classList.remove('py-3', 'shadow-sm');
+                navbar.classList.add('py-5');
+            }
+        });
+
+        window.addEventListener('load', fetchComplianceData);
+    </script>
+</body>
+</html>
