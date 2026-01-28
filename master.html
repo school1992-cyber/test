@@ -68,6 +68,15 @@
             color: #F59E0B;
         }
 
+        /* Hide scrollbar but allow scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
         /* Loading Spinner */
         .spinner {
             border: 3px solid #E5E7EB;
@@ -92,11 +101,11 @@
                 <a href="index.html" class="text-xl font-semibold tracking-tight">
                     <span class="text-amber-600">School</span> Portal
                 </a>
-                <div class="flex space-x-8">
-                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">Home</a>
-                    <a href="society.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">Society</a>
-                    <a href="master.html" class="nav-link active text-gray-800 font-medium text-sm tracking-wide">Master</a>
-                    <a href="cbsezone.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-sm tracking-wide">CBSE & Zone</a>
+                <div class="flex space-x-4 md:space-x-8 overflow-x-auto no-scrollbar">
+                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">Home</a>
+                    <a href="society.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">Society</a>
+                    <a href="master.html" class="nav-link active text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">Master</a>
+                    <a href="cbsezone.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">CBSE & Zone</a>
                 </div>
             </div>
         </div>
@@ -146,8 +155,8 @@
                 </div>
 
                 <!-- Year Tabs -->
-                <div class="flex justify-center mb-12 overflow-x-auto pb-4 no-scrollbar">
-                    <div class="inline-flex bg-gray-50 rounded-2xl p-2 gap-2" id="yearTabs">
+                <div class="flex justify-center mb-12">
+                    <div class="inline-flex bg-gray-50 rounded-2xl p-2 gap-2 overflow-x-auto no-scrollbar max-w-full" id="yearTabs">
                         <!-- Dynamic Tabs -->
                     </div>
                 </div>
