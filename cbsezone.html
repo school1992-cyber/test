@@ -11,22 +11,23 @@
     <style>
         * { font-family: 'Inter', sans-serif; }
         
+        /* Dark Mode Transitions */
+        html.dark { color-scheme: dark; }
+        body { transition: background-color 0.3s ease, color 0.3s ease; }
+
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
         .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
 
         .hover-lift {
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .hover-lift:hover {
             transform: translateY(-4px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         }
 
         .nav-link { position: relative; }
@@ -60,112 +61,184 @@
         .tab-btn.active::after { width: 100%; }
         .tab-btn.active { color: #10B981; }
 
-        .info-card {
-            transition: all 0.3s ease;
+        /* Skeleton Animation */
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        .skeleton {
+            background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.5s infinite linear;
+        }
+        .dark .skeleton {
+            background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%);
         }
 
-        /* Hide scrollbar but allow scrolling */
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-white min-h-screen text-gray-800">
+<body class="bg-white dark:bg-slate-950 min-h-screen text-gray-800 dark:text-gray-200 transition-colors duration-300">
     <!-- Navigation -->
-    <nav class="fixed top-0 left-0 right-0 bg-white/80 backdrop-blur-md z-50 transition-all duration-300 border-b border-gray-100" id="navbar">
+    <nav class="fixed top-0 left-0 right-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md z-50 transition-all duration-300 border-b border-gray-100 dark:border-slate-800" id="navbar">
         <div class="max-w-6xl mx-auto px-6">
             <div class="flex justify-between items-center py-5">
                 <a href="index.html" class="text-xl font-semibold tracking-tight">
                     <span class="text-emerald-600">School</span> Portal
                 </a>
-                <div class="flex space-x-4 md:space-x-8 overflow-x-auto no-scrollbar">
-                    <a href="index.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">Home</a>
-                    <a href="society.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">Society</a>
-                    <a href="master.html" class="nav-link text-gray-500 hover:text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">Master</a>
-                    <a href="cbsezone.html" class="nav-link active text-gray-800 font-medium text-xs md:text-sm tracking-wide whitespace-nowrap">CBSE & Zone</a>
+                <div class="flex items-center space-x-6">
+                    <div class="flex items-center space-x-8">
+                        <a href="index.html" class="nav-link text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white font-medium text-xs md:text-sm tracking-wide whitespace-nowrap transition-colors duration-300">Home</a>
+                        
+                        <!-- Documents Dropdown -->
+                        <div class="relative group">
+                            <button class="flex items-center space-x-1 nav-link active text-gray-800 dark:text-white font-medium text-xs md:text-sm tracking-wide whitespace-nowrap transition-colors duration-300">
+                                <span>Documents</span>
+                            </button>
+                            <!-- Dropdown Menu -->
+                            <div class="absolute left-0 mt-2 w-48 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left -translate-y-2 group-hover:translate-y-0 z-[60]">
+                                <div class="py-2">
+                                    <a href="society.html" class="block px-6 py-3 text-xs md:text-sm text-gray-600 dark:text-gray-400 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Society</a>
+                                    <a href="master.html" class="block px-6 py-3 text-xs md:text-sm text-gray-600 dark:text-gray-400 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Master</a>
+                                    <a href="cbsezone.html" class="block px-6 py-3 text-xs md:text-sm text-emerald-600 font-semibold bg-emerald-50 dark:bg-slate-800 transition-colors">CBSE & Zone</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Members Dropdown -->
+                        <div class="relative group">
+                            <button class="flex items-center space-x-1 nav-link text-gray-500 dark:text-gray-400 hover:text-gray-800 dark:hover:text-white font-medium text-xs md:text-sm tracking-wide whitespace-nowrap transition-colors duration-300">
+                                <span>Members</span>
+                            </button>
+                            <!-- Dropdown Menu -->
+                            <div class="absolute left-0 mt-2 w-48 bg-white dark:bg-slate-900 rounded-2xl shadow-xl border border-gray-100 dark:border-slate-800 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform origin-top-left -translate-y-2 group-hover:translate-y-0 z-[60]">
+                                <div class="py-2">
+                                    <a href="#" class="block px-6 py-3 text-xs md:text-sm text-gray-600 dark:text-gray-400 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Governing Body</a>
+                                    <a href="#" class="block px-6 py-3 text-xs md:text-sm text-gray-600 dark:text-gray-400 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Managing Committee</a>
+                                    <a href="#" class="block px-6 py-3 text-xs md:text-sm text-gray-600 dark:text-gray-400 hover:bg-emerald-50 dark:hover:bg-slate-800 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors">Staff Details</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <button onclick="openSearch()" class="p-2 text-gray-400 hover:text-emerald-600 transition-colors" title="Search (Cmd+K)">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                        </svg>
+                    </button>
                 </div>
             </div>
         </div>
     </nav>
 
+    <!-- Global Search Modal -->
+    <div id="searchModal" class="fixed inset-0 z-[100] hidden">
+        <div class="absolute inset-0 bg-slate-900/40 backdrop-blur-sm" onclick="closeSearch()"></div>
+        <div class="relative max-w-2xl mx-auto mt-24 px-4">
+            <div class="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-gray-100 dark:border-slate-800">
+                <div class="flex items-center p-5 border-b border-gray-50 dark:border-slate-800">
+                    <svg class="w-5 h-5 text-gray-400 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                    </svg>
+                    <input type="text" id="globalSearchInput" placeholder="Search compliance documents..." 
+                        class="flex-1 text-lg border-0 focus:ring-0 placeholder:text-gray-400 text-gray-900 dark:text-white bg-transparent"
+                        oninput="handleGlobalSearch(this.value)">
+                </div>
+                <div id="searchResults" class="max-h-[60vh] overflow-y-auto p-4 space-y-2"></div>
+                <div class="p-4 bg-gray-50 dark:bg-slate-800/50 border-t border-gray-100 dark:border-slate-800 flex justify-between items-center text-[10px] text-gray-400 uppercase tracking-widest font-bold">
+                    <span>Navigation: Arrows / Enter</span>
+                    <span>Close: Esc</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
     <!-- Header -->
     <header class="pt-32 pb-20 px-6">
         <div class="max-w-4xl mx-auto text-center">
             <p class="text-emerald-600 font-medium tracking-widest text-sm uppercase mb-4 animate-fade-in">Compliance</p>
-            <h1 class="text-4xl md:text-6xl font-light text-gray-900 mb-6 leading-tight animate-fade-in delay-100">
+            <h1 class="text-4xl md:text-6xl font-light text-gray-900 dark:text-white mb-6 leading-tight animate-fade-in">
                 CBSE & <span class="font-semibold">Zone Info</span>
             </h1>
-            <p class="text-lg text-gray-500 font-light max-w-xl mx-auto leading-relaxed animate-fade-in delay-200">
-                Regional affiliation details, zonal statistics, and centralized examination schedules.
+            <p class="text-lg text-gray-500 font-light max-w-xl mx-auto leading-relaxed animate-fade-in">
+                Regional affiliation details, zonal statistics, and centralized documentation.
             </p>
         </div>
     </header>
 
-    <!-- Main Tabs -->
+    <!-- Main Content -->
     <section class="pb-24 px-6">
         <div class="max-w-5xl mx-auto">
             
-            <!-- Loading State -->
-            <div id="loadingState" class="flex flex-col items-center justify-center py-20">
-                <div class="w-10 h-10 border-4 border-emerald-100 border-t-emerald-600 rounded-full animate-spin mb-4"></div>
-                <p class="text-gray-500 text-sm">Fetching compliance data...</p>
+            <!-- Loading State (Skeletons) -->
+            <div id="loadingState" class="space-y-12">
+                <div class="flex justify-center gap-4">
+                    <div class="skeleton w-32 h-10 rounded-xl"></div>
+                    <div class="skeleton w-32 h-10 rounded-xl"></div>
+                </div>
+                <div class="space-y-4">
+                    <div class="skeleton h-24 rounded-3xl"></div>
+                    <div class="skeleton h-24 rounded-3xl"></div>
+                    <div class="skeleton h-24 rounded-3xl"></div>
+                </div>
             </div>
 
             <!-- Error State -->
             <div id="errorState" class="hidden text-center py-20">
                 <div class="text-6xl mb-6">⚠️</div>
-                <p class="text-gray-600 text-lg mb-2">Unable to load data from the compliance sheet</p>
-                <button onclick="location.reload()" class="mt-8 px-6 py-2 bg-emerald-600 text-white rounded-full text-sm hover:bg-emerald-700 transition">Retry</button>
+                <p class="text-gray-600 dark:text-gray-400 text-lg mb-2">Unable to load data from the compliance sheet</p>
+                <button onclick="location.reload()" class="mt-8 px-6 py-2 bg-emerald-600 text-white rounded-full text-sm hover:bg-emerald-700 transition shadow-lg shadow-emerald-100 dark:shadow-none">Retry</button>
             </div>
 
             <div id="mainContent" class="hidden">
-                <div class="bg-gray-50 rounded-3xl p-2 mb-12 flex justify-center gap-2 overflow-x-auto no-scrollbar max-w-full animate-fade-in delay-300">
+                <div class="bg-gray-50 dark:bg-slate-900 rounded-3xl p-2 mb-12 flex justify-center gap-2 overflow-x-auto no-scrollbar max-w-full">
                     <button onclick="showTab('cbse', this)" class="tab-btn active px-4 md:px-8 py-3 rounded-2xl text-xs md:text-sm font-medium whitespace-nowrap">CBSE Information</button>
                     <button onclick="showTab('zone', this)" class="tab-btn px-4 md:px-8 py-3 rounded-2xl text-xs md:text-sm font-medium text-gray-500 whitespace-nowrap">Zone Details</button>
                 </div>
 
                 <!-- CBSE Tab -->
                 <div id="content-cbse" class="animate-fade-in space-y-4">
-                    <!-- Documents will load here -->
                 </div>
 
                 <!-- Zone Tab -->
                 <div id="content-zone" class="hidden animate-fade-in space-y-4">
-                    <!-- Documents will load here -->
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="py-12 px-6 border-t border-gray-100">
+    <footer class="py-12 px-6 border-t border-gray-100 dark:border-slate-800">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center">
             <p class="text-gray-400 text-sm">© 2024 School Management Portal</p>
             <div class="flex space-x-8 mt-4 md:mt-0">
-                <a href="index.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors">Home</a>
-                <a href="society.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors">Society</a>
-                <a href="master.html" class="text-gray-400 hover:text-gray-600 text-sm transition-colors">Master</a>
+                <a href="index.html" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-sm transition-colors">Home</a>
+                <a href="society.html" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-sm transition-colors">Society</a>
+                <a href="master.html" class="text-gray-400 hover:text-gray-600 dark:hover:text-white text-sm transition-colors">Master</a>
             </div>
         </div>
     </footer>
 
     <script>
         const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwtrlyjv_RSqQcWgf7_fqrLbItHxyY-Q1dHDplSL9ZLey3Yg5T1lY0o6HQ83FUWnTVBKA/exec?page=cbsezone';
-        
+        let dynamicIndex = [];
+
         async function fetchComplianceData() {
             try {
                 const response = await fetch(APPS_SCRIPT_URL);
                 const data = await response.json();
-                
                 if (data.error) throw new Error(data.error);
+                
+                // Index for search
+                const cbseItems = (data.cbse || []).map(d => ({ name: d.name, desc: 'CBSE Compliance Document', link: d.link, icon: '🎓' }));
+                const zoneItems = (data.zone || []).map(d => ({ name: d.name, desc: 'Zonal Information Document', link: d.link, icon: '📍' }));
+                dynamicIndex = [...cbseItems, ...zoneItems];
                 
                 renderComplianceUI(data);
             } catch (error) {
-                console.error("Fetch error:", error);
                 document.getElementById('loadingState').classList.add('hidden');
                 document.getElementById('errorState').classList.remove('hidden');
             }
@@ -174,50 +247,118 @@
         function renderComplianceUI(data) {
             document.getElementById('loadingState').classList.add('hidden');
             document.getElementById('mainContent').classList.remove('hidden');
-
             const cbseContainer = document.getElementById('content-cbse');
             const zoneContainer = document.getElementById('content-zone');
 
-            // Render CBSE Docs
-            if (data.cbse && data.cbse.length > 0) {
-                cbseContainer.innerHTML = data.cbse.map(doc => createDocCard(doc, 'emerald')).join('');
-            } else {
-                cbseContainer.innerHTML = '<p class="text-center py-10 text-gray-400">No CBSE documents found.</p>';
-            }
+            cbseContainer.innerHTML = (data.cbse && data.cbse.length > 0) 
+                ? data.cbse.map(doc => createDocCard(doc, 'emerald')).join('')
+                : '<p class="text-center py-10 text-gray-400">No CBSE documents found.</p>';
 
-            // Render ZONE Docs
-            if (data.zone && data.zone.length > 0) {
-                zoneContainer.innerHTML = data.zone.map(doc => createDocCard(doc, 'blue')).join('');
-            } else {
-                zoneContainer.innerHTML = '<p class="text-center py-10 text-gray-400">No Zone documents found.</p>';
+            zoneContainer.innerHTML = (data.zone && data.zone.length > 0) 
+                ? data.zone.map(doc => createDocCard(doc, 'blue')).join('')
+                : '<p class="text-center py-10 text-gray-400">No Zone documents found.</p>';
+        }
+
+        // ==========================================
+        // GLOBAL SEARCH UI LOGIC
+        // ==========================================
+        const searchModal = document.getElementById('searchModal');
+        const searchInput = document.getElementById('globalSearchInput');
+        const searchResults = document.getElementById('searchResults');
+        
+        const staticLinks = [
+            { name: 'Home Page', desc: 'Main dashboard', link: 'index.html', icon: '🏠' },
+            { name: 'Society Documents', desc: 'Bye-laws and certificates', link: 'society.html', icon: '🏢' },
+            { name: 'Master Records', desc: 'Yearly institutional docs', link: 'master.html', icon: '📁' },
+            { name: 'CBSE & Zone Info', desc: 'Compliance and affiliation', link: 'cbsezone.html', icon: '🎓' },
+            { name: 'Governing Body', desc: 'School leadership members', link: '#', icon: '👔' },
+            { name: 'Managing Committee', desc: 'Institutional oversight', link: '#', icon: '🤝' },
+            { name: 'Staff Details', desc: 'Faculty and personnel records', link: '#', icon: '👨‍🏫' }
+        ];
+
+        async function buildFullIndex() {
+            try {
+                const base = APPS_SCRIPT_URL.split('?')[0];
+                const [societyRes, masterRes, cbseRes] = await Promise.all([
+                    fetch(`${base}?page=society`).then(r => r.json()),
+                    fetch(`${base}?page=master`).then(r => r.json()),
+                    fetch(`${base}?page=cbsezone`).then(r => r.json())
+                ]);
+                let items = [];
+                if (societyRes.societies) societyRes.societies.forEach(s => s.documents.forEach(d => items.push({ name: d.name, desc: `Society Document (${s.name})`, link: d.link, icon: '🏢' })));
+                if (masterRes.years) masterRes.years.forEach(y => y.documents.forEach(d => items.push({ name: d.name, desc: `Master Record (${y.year})`, link: d.link, icon: '📁' })));
+                if (cbseRes.cbse) cbseRes.cbse.forEach(d => items.push({ name: d.name, desc: 'CBSE Compliance Document', link: d.link, icon: '🎓' }));
+                if (cbseRes.zone) cbseRes.zone.forEach(d => items.push({ name: d.name, desc: 'Zonal Information Document', link: d.link, icon: '📍' }));
+                dynamicIndex = items;
+            } catch (e) { console.error("Search index failed:", e); }
+        }
+        buildFullIndex();
+
+        function openSearch() {
+            searchModal.classList.remove('hidden');
+            searchInput.focus();
+            document.body.style.overflow = 'hidden';
+            handleGlobalSearch('');
+        }
+
+        function closeSearch() {
+            searchModal.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+            if (e.key === 'Escape') closeSearch();
+        });
+
+        function handleGlobalSearch(query) {
+            const term = query.toLowerCase().trim();
+            const combined = [...staticLinks, ...dynamicIndex];
+            const filtered = term ? combined.filter(i => i.name.toLowerCase().includes(term) || (i.desc && i.desc.toLowerCase().includes(term))) : staticLinks.slice(0, 4);
+            renderResults(filtered, term ? "Search Results" : "Quick Links");
+        }
+
+        function renderResults(items, title) {
+            if (items.length === 0) {
+                searchResults.innerHTML = `<div class="text-center py-10 text-gray-400 font-light">No results found.</div>`;
+                return;
             }
+            searchResults.innerHTML = `<div class="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-3 ml-2">${title}</div>` + 
+                items.map(item => `
+                    <a href="${item.link}" class="flex items-center p-4 rounded-2xl hover:bg-gray-50 dark:hover:bg-slate-800 border border-transparent hover:border-gray-100 dark:hover:border-slate-700 transition-all group">
+                        <div class="w-10 h-10 bg-white dark:bg-slate-700 shadow-sm rounded-xl flex items-center justify-center mr-4 group-hover:scale-110 transition-transform"><span class="text-xl">${item.icon}</span></div>
+                        <div class="flex-1"><div class="font-medium text-gray-900 dark:text-white">${item.name}</div><div class="text-xs text-gray-400">${item.desc}</div></div>
+                        <svg class="w-5 h-5 text-gray-300 group-hover:text-emerald-600 transform group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>`).join('');
         }
 
         function createDocCard(doc, color) {
-            const colorClasses = {
-                emerald: { bg: 'bg-emerald-50', text: 'text-emerald-600' },
-                blue: { bg: 'bg-blue-50', text: 'text-blue-600' }
+            const colors = {
+                emerald: { bg: 'bg-emerald-50 dark:bg-emerald-900/20', text: 'text-emerald-600 dark:text-emerald-400' },
+                blue: { bg: 'bg-blue-50 dark:bg-blue-900/20', text: 'text-blue-600 dark:text-blue-400' }
             };
-            const cls = colorClasses[color];
-
+            const c = colors[color];
             return `
-                <div class="p-6 bg-white border border-gray-100 rounded-3xl flex items-center justify-between group hover:bg-${color}-50/30 transition-all hover-lift">
+                <div class="p-6 bg-white dark:bg-slate-900 border border-gray-100 dark:border-slate-800 rounded-3xl flex items-center justify-between group hover:bg-opacity-50 transition-all hover-lift">
                     <div class="flex items-center gap-4">
-                        <div class="w-12 h-12 ${cls.bg} ${cls.text} rounded-2xl flex items-center justify-center">
+                        <div class="w-12 h-12 ${c.bg} ${c.text} rounded-2xl flex items-center justify-center">
                             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
                             </svg>
                         </div>
                         <div>
-                            <p class="font-medium text-gray-900">${doc.name}</p>
+                            <p class="font-medium text-gray-900 dark:text-white">${doc.name}</p>
                             <p class="text-xs text-gray-400 uppercase tracking-tight">Compliance Document</p>
                         </div>
                     </div>
-                    <a href="${doc.link}" target="_blank" class="text-gray-300 group-hover:${cls.text} transition-colors p-2">
-                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
-                        </svg>
-                    </a>
+                    <div class="flex items-center gap-2">
+                        <button onclick="copyToClipboard('${doc.link}')" class="p-2 text-gray-300 hover:${c.text} transition-colors">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m-3 8h3m-3 4h3m-6-4h.01M9 17h.01"></path></svg>
+                        </button>
+                        <a href="${doc.link}" target="_blank" class="p-2 text-gray-300 hover:${c.text} transition-colors">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
+                        </a>
+                    </div>
                 </div>
             `;
         }
@@ -228,21 +369,18 @@
                 b.classList.add('text-gray-500');
             });
             btn.classList.add('active');
-            btn.classList.remove('text-gray-500');
-
             document.querySelectorAll('[id^="content-"]').forEach(el => el.classList.add('hidden'));
             document.getElementById('content-' + tabName).classList.remove('hidden');
         }
 
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => alert('Link copied!'));
+        }
+
         window.addEventListener('scroll', () => {
-            const navbar = document.getElementById('navbar');
-            if (window.scrollY > 50) {
-                navbar.classList.add('py-3', 'shadow-sm');
-                navbar.classList.remove('py-5');
-            } else {
-                navbar.classList.remove('py-3', 'shadow-sm');
-                navbar.classList.add('py-5');
-            }
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) nav.classList.add('py-3', 'shadow-sm');
+            else nav.classList.remove('py-3', 'shadow-sm');
         });
 
         window.addEventListener('load', fetchComplianceData);
