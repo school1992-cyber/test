@@ -1,0 +1,16 @@
+{
+    "name": "School Management Portal",
+    "short_name": "SchoolPortal",
+    "start_url": "/index.html",
+    "display": "standalone",
+    "background_color": "#ffffff",
+    "theme_color": "#4f46e5",
+    "description": "Streamlined solution for educational resources and administration.",
+    "icons": [
+        {
+            "src": "https://cdn-icons-png.flaticon.com/512/2991/2991148.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
